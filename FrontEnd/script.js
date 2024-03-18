@@ -1,62 +1,67 @@
-// Fonction asynchrone pour récupérer des œuvres depuis l'API
-async function getWorksFromAPI() {
-    try {
-      const apiUrlWorks = 'http://localhost:5678/api/works';
-      const response = await fetch(apiUrlWorks);
-  
-      if (!response.ok) {
-        throw new Error(`Erreur de récupération des données. Statut : ${response.status}`);
-      }
-  
-      const works = await response.json();
-  
-      console.log('Projet de Sophie Bluel:', works);
-  
-      return works; // afficher les projets 
+// declarer l'url de l'api
+const worksAPI = 'http://localhost:5678/api/works'
 
-    } catch (error) {
-      // Gestion des erreurs
-      console.error('Erreur lors de la récupération des œuvres :', error);
-      throw error; // Vous pouvez relancer l'erreur si nécessaire
-    }
-  }
-  
-  getWorksFromAPI();
-  
+//recuperer les travaux avec la fonction fetch 
+fetch(worksAPI)
 
-  // Fonction asynchrone pour mettre à jour la galerie avec les œuvres récupérées
-async function AddWorksGallery() {
-    try {
-        // Récupérer les œuvres depuis l'API
-        const works = await getWorksFromAPI();
 
-        // Sélectionner les éléments de la galerie dans le DOM
-        const galleryElements = document.querySelector('.gallery');
 
-        // Supprimer les travaux existants du HTML
-        galleryElements.innerHTML = '';
+//traiter la reponse de l'api pour pouvoir utiliser les donnees reçues, 
+.then (response => {
 
-        // Parcourir les œuvres et ajouter chaque travaux à la galerie
-        works.forEach(work => {
-            const figureElement = document.createElement('figure');
-            const imgElement = document.createElement('img');
-            const figcaptionElement = document.createElement('figcaption');
-
-            imgElement.src = work.imageUrl; 
-            imgElement.alt = work.title; 
-            figcaptionElement.textContent = work.title; 
-
-            figureElement.appendChild(imgElement);
-            figureElement.appendChild(figcaptionElement);
-
-            galleryElements.appendChild(figureElement);
-        });
-
-    } catch (error) {
-        // Gestion des erreurs
-        console.error('Erreur lors de la mise à jour de la galerie :', error);
-    
-    }
+//verifier si cest ok / ("!"" negation)
+//" si la reponse est fausse = afficher une erreur "
+if (!response.ok) {
+  throw new error ('erreur')
 }
+// si cest ok, retourner la reponse en JSON
+return response.json ()
+})
 
-AddWorksGallery();
+
+
+//traiter les data (afficher une reponse sur la console etc)
+.then (data => {
+  console.log(data, 'cest ok!')
+
+ // selectionner la galerie dans le HTML
+ const gallery = document.querySelector('#gallery');
+
+ // supprimer le contenu precedent de la galerie 
+ gallery.innerHTML = '';
+
+
+
+
+//ajouter les travaux au html
+data.forEach(work => {
+  
+//creer les new elements dans le html
+const idWork = document.createElement ('figure') // idWork
+const title = document.createElement ('figcaption') // titre 
+const imageUrl = document.createElement ('img') // img
+
+
+//recuperer les src des elements crees
+imageUrl.src = work.imageUrl // img
+imageUrl.textContent = work.title // legende img
+title.textContent = work.title // titre
+
+
+//ajouter l'img et le titre au idWork 
+idWork.appendChild(imageUrl)
+idWork.appendChild(title)
+
+//ajouter idWork a la gallery
+
+gallery.appendChild(idWork)
+});
+
+})
+
+//afficher une eventuelle erreur dans la console 
+.catch(error => {
+  console.log('erreur')
+})
+
+
