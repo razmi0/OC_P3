@@ -1,67 +1,99 @@
-// declarer l'url de l'api
-const worksAPI = 'http://localhost:5678/api/works'
+const worksURL = 'http://localhost:5678/api/works'
 
 //recuperer les travaux avec la fonction fetch 
-fetch(worksAPI)
-
-
+fetch(worksURL)
 
 //traiter la reponse de l'api pour pouvoir utiliser les donnees reçues, 
 .then (response => {
 
-//verifier si cest ok / ("!"" negation)
-//" si la reponse est fausse = afficher une erreur "
 if (!response.ok) {
   throw new error ('erreur')
 }
-// si cest ok, retourner la reponse en JSON
+
 return response.json ()
 })
 
-
-
-//traiter les data (afficher une reponse sur la console etc)
 .then (data => {
   console.log(data, 'cest ok!')
 
- // selectionner la galerie dans le HTML
  const gallery = document.querySelector('#gallery');
 
- // supprimer le contenu precedent de la galerie 
  gallery.innerHTML = '';
 
-
-
+ const dataWorks = data 
 
 //ajouter les travaux au html
-data.forEach(work => {
+dataWorks.forEach(work => {
   
 //creer les new elements dans le html
-const idWork = document.createElement ('figure') // idWork
+const elementsWork = document.createElement ('figure') // elementWork
 const title = document.createElement ('figcaption') // titre 
 const imageUrl = document.createElement ('img') // img
 
 
-//recuperer les src des elements crees
-imageUrl.src = work.imageUrl // img
-imageUrl.textContent = work.title // legende img
-title.textContent = work.title // titre
+//recuperer les src des elements crees //
+imageUrl.src = work.imageUrl // img //
+imageUrl.textContent = work.title // legende img //
+title.textContent = work.title // titre //
 
 
-//ajouter l'img et le titre au idWork 
-idWork.appendChild(imageUrl)
-idWork.appendChild(title)
+//ajouter l'img et le titre au idWork //
+elementsWork.appendChild(imageUrl)
+elementsWork.appendChild(title)
 
-//ajouter idWork a la gallery
+//ajouter elementsWork a la gallery //
 
-gallery.appendChild(idWork)
+gallery.appendChild(elementsWork)
 });
 
+
+// recuperer les categories //
+const categoriesURL = 'http://localhost:5678/api/categories'
+
+fetch(categoriesURL)
+
+.then (response => {
+if (!response.ok) {
+  throw new error ('erreur')
+}
+return response.json ()
 })
 
-//afficher une eventuelle erreur dans la console 
+.then (data => {
+  console.log(data, 'cest ok!')
+
+ const dataCategories = data
+
+ const tous = new Set()
+ tous.add(dataWorks)
+ tous.forEach
+
+  console.log(tous)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }) 
+
+
 .catch(error => {
   console.log('erreur')
 })
 
+
+})
 
