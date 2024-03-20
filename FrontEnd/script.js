@@ -64,26 +64,12 @@ return response.json ()
 
  const dataCategories = data
 
+ // creer des set pour chaque catgories 
  const tous = new Set()
  tous.add(dataWorks)
  tous.forEach
 
   console.log(tous)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
