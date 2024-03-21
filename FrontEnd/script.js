@@ -1,85 +1,58 @@
-const worksURL = 'http://localhost:5678/api/works'
 
-//recuperer les travaux avec la fonction fetch 
-fetch(worksURL)
 
-//traiter la reponse de l'api pour pouvoir utiliser les donnees reçues, 
-.then (response => {
+// fonction async recuperer API 
+async function getWorks () {
 
-if (!response.ok) {
-  throw new error ('erreur')
+  const worksURL = 'http://localhost:5678/api/works'
+  const response = await fetch(worksURL)
+  return await response.json()
 }
 
-return response.json ()
-})
 
-.then (data => {
-  console.log(data, 'cest ok!')
+// fonction async pour afficher les works 
+async function displayWorks() {
 
- const gallery = document.querySelector('#gallery');
+  const gallery = document.querySelector('#gallery');
+  gallery.innerHTML = '';
+  const works = await getWorks()
 
- gallery.innerHTML = '';
-
- const dataWorks = data 
-
-//ajouter les travaux au html
-dataWorks.forEach(work => {
+  works.forEach(work => {
   
-//creer les new elements dans le html
-const elementsWork = document.createElement ('figure') // elementWork
-const title = document.createElement ('figcaption') // titre 
-const imageUrl = document.createElement ('img') // img
+    //creer les new elements dans le html
+    const elementsWork = document.createElement ('figure') // elementWork
+    const title = document.createElement ('figcaption') // titre 
+    const imageUrl = document.createElement ('img') // img
+    //recuperer les src des elements crees //
+    imageUrl.src = work.imageUrl // img //
+    imageUrl.textContent = work.title // legende img //
+    title.textContent = work.title // titre //
+    //ajouter l'img et le titre au idWork //
+    elementsWork.appendChild(imageUrl)
+    elementsWork.appendChild(title)
+    //ajouter elementsWork a la gallery //
+    gallery.appendChild(elementsWork)
+    });
+  console.log(works); }
+
+displayWorks();
 
 
-//recuperer les src des elements crees //
-imageUrl.src = work.imageUrl // img //
-imageUrl.textContent = work.title // legende img //
-title.textContent = work.title // titre //
+// function pour fetch API categories
+async function getCategories () {
 
-
-//ajouter l'img et le titre au idWork //
-elementsWork.appendChild(imageUrl)
-elementsWork.appendChild(title)
-
-//ajouter elementsWork a la gallery //
-
-gallery.appendChild(elementsWork)
-});
-
-
-// recuperer les categories //
 const categoriesURL = 'http://localhost:5678/api/categories'
-
-fetch(categoriesURL)
-
-.then (response => {
-if (!response.ok) {
-  throw new error ('erreur')
+const response = await fetch(categoriesURL)
+return await response.json()
 }
-return response.json ()
-})
-
-.then (data => {
-  console.log(data, 'cest ok!')
-
- const dataCategories = data
-
- // creer des set pour chaque catgories 
- const tous = new Set()
- tous.add(dataWorks)
- tous.forEach
-
-  console.log(tous)
 
 
-
-  }) 
-
-
-.catch(error => {
-  console.log('erreur')
-})
+//function async pour afficher les categories
+async function displayCategories () {
+  const categories = await getCategories()
+  console.log(categories)
 
 
-})
+}
+displayCategories()
+
 
