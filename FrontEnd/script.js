@@ -1,7 +1,5 @@
 
-let workID = []
 
-// fonction async recuperer API 
 async function getWorks () {
 
   const worksURL = 'http://localhost:5678/api/works'
@@ -9,28 +7,41 @@ async function getWorks () {
   return await response.json()
 }
 
+function displayWorks() {
 
-// fonction async pour afficher les works 
-async function displayWorks() {
+const worksData = getWorks() 
+console.log(worksData)
+}
+
+displayWorks(worksData)
+  
+function selectGallery (){
 
   const gallery = document.querySelector('#gallery');
-  gallery.innerHTML = '';
-  const worksData = await getWorks()
+  gallery.innerHTML = ''; 
+}
+selectGallery ()
 
-  worksData.forEach(work => {  
+function elementsHtml (){  
+  
+  works.forEach(work => {  
     //creer les new elements dans le html
     const elementsWork = document.createElement ('figure') // elementWork
     const title = document.createElement ('figcaption') // titre 
-    const imageUrl = document.createElement ('img') // img
-  
+    const imageUrl = document.createElement ('img') // img 
+  }
+}
+
+elementsHtml()
+
+function getSrcElements(work){
     //recuperer les src des elements crees //
     imageUrl.src = work.imageUrl // img //
     imageUrl.textContent = work.title // legende img //
     title.textContent = work.title // titre //
-  
+}
 
-    elementsWork.setAttribute('data-work-id', work.id);
-
+function addSrcElement() {
     //ajouter l'img et le titre au idWork //
     elementsWork.appendChild(imageUrl)
     elementsWork.appendChild(title)
@@ -38,58 +49,70 @@ async function displayWorks() {
     gallery.appendChild(elementsWork)
 
     workID.push(work.id);
-    });
-  console.log(worksData); }
 
-displayWorks();
+};
 
-
-// function pour fetch API categories
 async function getCategories () {
 
 const categoriesURL = 'http://localhost:5678/api/categories'
 const response = await fetch(categoriesURL)
 return await response.json()
+
 }
 
-
-//function async pour afficher les categories
-async function displayCategories () { // fonction Afficher les Categories
+function displayCategories () { 
   
-  const categoriesData = await getCategories()
+  const categoriesData = getCategories()
   console.log(categoriesData)
+  
+}
+displayCategories(categoriesData) 
+
+
+function selectFiltersHtml (){
 
   const selectorFilter = document.getElementById('filtersSection');
   console.log(selectorFilter)
+}
   
  
-    function createList () { // fonction CREER LISTE UL
+function createFiltersList () { 
+
     const createList = document.createElement('ul')
+    console.log(createList)
 
-    categoriesData.forEach(category => {
-      
-      const listCategories = document.createElement("li")
-      console.log(listCategories)
-      listCategories.textContent = category.name // setup text 
-      listCategories.setAttribute('data-category-id', category.id);
-      console.log(category.id , "OKKKKK")
-      
-      const worksSelect = document.querySelectorAll('.gallery ') //selectionner toute la gallery 
-      
-      listCategories.addEventListener('click', () => { // event listener
+    const listCategories = document.createElement("li")
+    console.log(listCategories)
+}
 
-      
-      const ID = workID // recuperer les ID du tableau, probleme => que les ID, pas les Works
-      console.log(workID, "OK")
+function addCategoriesToTheList () {
 
-      worksSelect.forEach(element => { 
+categoriesData.forEach(category => {
 
-        if (ID !== category.id ) 
-        {
-          element.style.display ='none';
-        } else {
-          element.style.display ='block'
-        }
+ listCategories.textContent = category.name 
+ listCategories.setAttribute('data-category-id', category.id))
+ console.log(category.id , "OKKKKK")
+}
+
+function listenerGallery () {
+
+  const worksSelect = document.querySelectorAll('.gallery ')
+  listCategories.addEventListener()
+  console.log(worksSelect)
+}
+  
+function ClickAndFilter () {
+
+ listCategories = ('click' , () => { 
+
+  worksSelect.forEach(element => { 
+
+  if (worksData !== categoriesData ) 
+  {
+    element.style.display ='none';
+  } else {
+    element.style.display ='block'
+  }
       })
 
       
@@ -97,15 +120,14 @@ async function displayCategories () { // fonction Afficher les Categories
 
   createList.appendChild(listCategories)
 
-})
+}
 
-return createList
-    }
+
 
 selectorFilter.appendChild(createList())
 
-  }
+  
 
-displayCategories()
+
 
   
