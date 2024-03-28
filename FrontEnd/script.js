@@ -1,133 +1,72 @@
 
+const worksURL = 'http://localhost:5678/api/works'
+const categoriesURL = 'http://localhost:5678/api/categories'
+const selectGallery = document.querySelector('#gallery')
 
-async function getWorks () {
 
-  const worksURL = 'http://localhost:5678/api/works'
+
+const getWorks  = async ()  => {
   const response = await fetch(worksURL)
   return await response.json()
 }
 
-function displayWorks() {
 
-const worksData = getWorks() 
-console.log(worksData)
+const getCategories  = async ()  => {
+  const response = await fetch(categoriesURL)
+  return await response.json()
 }
 
-displayWorks(worksData)
+
+// afficher wokrs
+const displayWorks = (works) => {
+
+  selectGallery.innerHTML = ''
   
-function selectGallery (){
+    const elementsWork = document.createElement ('figure') 
+    const caption = document.createElement ('figcaption') 
+    const img = document.createElement ('img')
 
-  const gallery = document.querySelector('#gallery');
-  gallery.innerHTML = ''; 
-}
-selectGallery ()
+    img.src = works.imageUrl
+    img.textContent = works.title
+    caption.textContent = works.title
+    elementsWork.setAttribute('data-work-id', id);
 
-function elementsHtml (){  
-  
-  works.forEach(work => {  
-    //creer les new elements dans le html
-    const elementsWork = document.createElement ('figure') // elementWork
-    const title = document.createElement ('figcaption') // titre 
-    const imageUrl = document.createElement ('img') // img 
-  }
-}
-
-elementsHtml()
-
-function getSrcElements(work){
-    //recuperer les src des elements crees //
-    imageUrl.src = work.imageUrl // img //
-    imageUrl.textContent = work.title // legende img //
-    title.textContent = work.title // titre //
-}
-
-function addSrcElement() {
-    //ajouter l'img et le titre au idWork //
-    elementsWork.appendChild(imageUrl)
-    elementsWork.appendChild(title)
-    //ajouter elementsWork a la gallery //
+   
+    elementsWork.appendChild(img)
+    elementsWork.appendChild(caption)
     gallery.appendChild(elementsWork)
 
-    workID.push(work.id);
-
-};
-
-async function getCategories () {
-
-const categoriesURL = 'http://localhost:5678/api/categories'
-const response = await fetch(categoriesURL)
-return await response.json()
-
 }
 
-function displayCategories () { 
+// au click ...
+const click = (works, categories) => {
   
-  const categoriesData = getCategories()
-  console.log(categoriesData)
-  
-}
-displayCategories(categoriesData) 
+//evnt listener pour afficher les works
 
-
-function selectFiltersHtml (){
-
-  const selectorFilter = document.getElementById('filtersSection');
-  console.log(selectorFilter)
-}
-  
- 
-function createFiltersList () { 
-
-    const createList = document.createElement('ul')
-    console.log(createList)
-
-    const listCategories = document.createElement("li")
-    console.log(listCategories)
-}
-
-function addCategoriesToTheList () {
-
-categoriesData.forEach(category => {
-
- listCategories.textContent = category.name 
- listCategories.setAttribute('data-category-id', category.id))
- console.log(category.id , "OKKKKK")
-}
-
-function listenerGallery () {
-
-  const worksSelect = document.querySelectorAll('.gallery ')
-  listCategories.addEventListener()
-  console.log(worksSelect)
-}
-  
-function ClickAndFilter () {
-
- listCategories = ('click' , () => { 
-
-  worksSelect.forEach(element => { 
-
-  if (worksData !== categoriesData ) 
-  {
-    element.style.display ='none';
-  } else {
-    element.style.display ='block'
-  }
-      })
-
-      
-    })
-
-  createList.appendChild(listCategories)
-
+// au click si cat est dif de works  
+//ne pas afficher les works 
+//sinon 
+//afficher works si = cat id === cat id (filtre)
 }
 
 
+// afficher categories et creer un elements (Ul) et leurs ajouter le filtre
+const displayCategories = () => {
 
-selectorFilter.appendChild(createList())
+}
 
-  
+//creer les filtres 
 
 
 
-  
+//ecouter filtre et ajouter function filtre
+
+
+
+
+
+//appeler les fonctions
+const worksData = await getWorks()
+console.log(worksData)
+const categoriesData = await getCategories()
+console.log(categoriesData)
