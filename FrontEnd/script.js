@@ -47,42 +47,42 @@ worksData.forEach(work => {
 // au click ...
 const click = (works, categories) => {
   
-selectGallery.addEventListener('click', () => {
+selectGallery.addEventListener('click', (event) => { 
+ 
 
-if (categories.id !== works.id ) {
-works.style.display = 'none'
-
-} else {
-// 
-
-}
 })
-
 }
 
 
 // afficher categories 
-const displayCategories = () => {
+const displayCategories = (categoriesData) => {
 
-  const filtreUl = document.createElement('ul')
-  filters.appendChild(filtreUl)
+  const filtersUl = document.createElement('ul')
+  filtersUl.classList.add('categories')
 
-  filtreUl.appendChild(createFilters()) //fonctionne pas 
+  filters.appendChild(filtersUl)
+
+  createFilters(categoriesData, filtersUl)
 
 }
   
 
-
 //creer les filtres
-const createFilters = () => {
+const createFilters = (categoriesData, filtreUl) => {
 
-  const all = document.createElement('Tous')
-  all = displayWorks() 
+  const all = document.createElement('li')
+  all.textContent = 'Tous'
+  all.classList.add('filters')
+  filtreUl.appendChild(all)
 
   categoriesData.forEach(category => {
 
   const filterLi = document.createElement('li')
   filterLi.textContent = category.name 
+  filterLi.classList.add('filters')
+
+  filtreUl.appendChild(filterLi)
+
   })
   
 }
@@ -101,3 +101,4 @@ console.log(categoriesData)
 
 displayWorks(worksData)
 displayCategories(categoriesData)
+

@@ -194,7 +194,7 @@ footer nav ul {
 	gap: 7px;
 }
 
-.filter {
+.filters {
 	border: solid 1px #1D6154;
 	border-radius: 60px;
 	padding: 7px 20px;
@@ -202,7 +202,7 @@ footer nav ul {
 	font-family: 'syne';
 }
 
-.filter:hover {
+.filters:hover {
 	background-color: #1D6154;
 	color: white;
 }
