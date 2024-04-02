@@ -4,6 +4,7 @@ const worksURL = 'http://localhost:5678/api/works'
 const categoriesURL = 'http://localhost:5678/api/categories'
 const selectGallery = document.querySelector('#gallery')
 const filters = document.getElementById('filtersSection')
+let filteredWorks
 
 
 
@@ -20,7 +21,7 @@ const getCategories  = async ()  => {
 
 
 // afficher wokrs
-const displayWorks = () => {
+const displayWorks = (worksData) => {
 
 selectGallery.innerHTML = ''
 
@@ -45,52 +46,60 @@ worksData.forEach(work => {
 
 
 // au click ...
-const click = (works, categories) => {
-  
-selectGallery.addEventListener('click', (event) => { 
- 
+const click = (works) => {
+  filters.addEventListener('click', (event) => { 
+    const selectedCategoryId = event.target.getAttribute('data-categories-id')// Récupérer l'ID de la catégorie sélectionnée
+    console.log(selectedCategoryId)
 
-})
+    if (selectedCategoryId !== 'all') { //si le click et diff de all on filtre sinon on garde les works
+      const filteredWorks = works.filter(work => work.categoryId === selectedCategoryId);
+      displayWorks(filteredWorks)
+
+    } else {
+
+     displayWorks(works)
+    }
+
+  });
 }
 
 
+
 // afficher categories 
-const displayCategories = (categoriesData) => {
+const displayCategories = (categoriesData, works) => {
 
   const filtersUl = document.createElement('ul')
   filtersUl.classList.add('categories')
 
   filters.appendChild(filtersUl)
 
-  createFilters(categoriesData, filtersUl)
-
+  createFilters(categoriesData, filtersUl, works)
 }
   
 
 //creer les filtres
-const createFilters = (categoriesData, filtreUl) => {
+const createFilters = (categoriesData, filter) => {
 
-  const all = document.createElement('li')
-  all.textContent = 'Tous'
-  all.classList.add('filters')
-  filtreUl.appendChild(all)
+  const allWorksElements = document.createElement('li')
+
+  allWorksElements.textContent = 'Tous'
+  allWorksElements.classList.add('filters')
+
+  filter.appendChild(allWorksElements)
 
   categoriesData.forEach(category => {
+  const elementsList = document.createElement('li')
 
-  const filterLi = document.createElement('li')
-  filterLi.textContent = category.name 
-  filterLi.classList.add('filters')
+  elementsList.textContent = category.name
+  elementsList.setAttribute('data-categories-id', category.id);
+  
+  elementsList.classList.add('filters')
 
-  filtreUl.appendChild(filterLi)
+  filter.appendChild(elementsList)
 
   })
   
 }
-
-
-
-
-
 
 //appeler les fonctions
 const worksData = await getWorks()
@@ -100,5 +109,5 @@ const categoriesData = await getCategories()
 console.log(categoriesData)
 
 displayWorks(worksData)
-displayCategories(categoriesData)
+displayCategories(categoriesData, worksData)
 
