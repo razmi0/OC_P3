@@ -1,0 +1,30 @@
+/*  */
+/*  */
+/* THOMAS FEUILLE DE STYLE */
+/*  */
+/*  */
+
+/* Améliore la lisibilité de la typo pratique pour les gens
+ qui on de la merde dans les yeux toute l'année */
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*  petit reset CSS */
+*,
+*::before,
+*::after {
+  /* Pour éviter les pbs de dimensions, box-sizing fait en sorte que les bordures
+  fasse partie du calcul de la dimension d'un élément
+   ( dette technique du CSS, box-sizing: border-box devrait être le défaut) */
+  box-sizing: border-box;
+}
+
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
