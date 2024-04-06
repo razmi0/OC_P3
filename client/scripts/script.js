@@ -107,36 +107,43 @@ displayWorks("Tous");
 
 /**
  * Creer les filtres
- * @description Boucle sur groupedWorks et creer un tableau de avec les noms des catégories
- * Tous , objets, appartement, hotel & restaurant
- * @param {*} categoriesData
- * @param {*} filter
+ * @description Apres avoir creer le <ul>, boucle sur categorieData , fabrique les <li>, les ajoute au <ul>
+ * @returns {HTMLLIElement[]} - Tous les <li> sont stocké dans un tableau et retourné par la fonction
  */
-const createFilters = (categoriesData, filter) => {
-  const categoriesNames = Array.from(groupedWorks.keys()).reverse();
-  console.log(categoriesNames);
-
+const createFilters = () => {
   const filtersUl = document.createElement("ul");
   filtersUl.classList.add("categories");
   filters.appendChild(filtersUl);
-  const allWorksElements = document.createElement("li");
 
-  allWorksElements.textContent = "Tous";
-  allWorksElements.classList.add("filters");
+  const allLis = [];
 
-  filter.appendChild(allWorksElements);
+  // On rajoute "Tous" manuellement
+  const tousElement = document.createElement("li");
+  tousElement.textContent = "Tous";
+  tousElement.setAttribute("data-categories-id", "0");
+  tousElement.classList.add("filters");
+  filtersUl.appendChild(tousElement);
+
+  allLis.push(tousElement);
 
   categoriesData.forEach((category) => {
-    const elementsList = document.createElement("li");
-
-    elementsList.textContent = category.name;
-    elementsList.setAttribute("data-categories-id", category.id);
-
-    elementsList.classList.add("filters");
-
-    filter.appendChild(elementsList);
+    const elementList = document.createElement("li");
+    elementList.textContent = category.name;
+    elementList.setAttribute("data-categories-id", category.id.toString());
+    elementList.classList.add("filters");
+    filtersUl.appendChild(elementList);
+    allLis.push(elementList);
   });
+
+  return allLis;
 };
+
+const allFiltersElements = createFilters();
+
+/**
+ * @description attachListeners boucle sur les <li> stocké dans allFiltersElements et ajoute un eventListener au click relier à une fonction de filtre
+ * @param {WorksDataType[]} works
+ */
 
 // au click ...
 const click = (works) => {
