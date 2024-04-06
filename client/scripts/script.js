@@ -88,7 +88,7 @@ const displayWorks = (categorieName) => {
     return;
   }
 
-  selectedWorks[categorieName].forEach((work) => {
+  selectedWorks.forEach((work) => {
     const elementsWork = document.createElement("figure");
     const caption = document.createElement("figcaption");
     const img = document.createElement("img");
@@ -96,7 +96,7 @@ const displayWorks = (categorieName) => {
     img.src = work.imageUrl;
     img.textContent = work.title;
     caption.textContent = work.title;
-    elementsWork.setAttribute("data-work-id", work.id);
+    elementsWork.setAttribute("data-work-id", work.id.toString());
 
     elementsWork.appendChild(img);
     elementsWork.appendChild(caption);
