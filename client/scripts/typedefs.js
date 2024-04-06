@@ -1,3 +1,9 @@
+//-----------------------------------------------------------------------------------------------
+// Description: This file contains all the type definitions used in the application (JSDoc syntax)
+// -----------------------------------------------------------------------------------------------
+// Type definitions for the application : WorkData & CategoryData
+//-----------------------------------------------------------------------------------------------
+
 /**
  * Works data.
  *
