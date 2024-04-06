@@ -1,32 +1,19 @@
 //@ts-check
 "use strict";
+
+import { getCategories, getWorks } from "./fetch.js";
+
+// TYPES
 /**
  * @typedef {import("./typedefs.js").WorksDataType} WorksDataType
  * @typedef {import("./typedefs.js").CategoryType} CategoryType
  */
-const worksURL = "http://localhost:5678/api/works";
-const categoriesURL = "http://localhost:5678/api/categories";
+
 const selectGallery = document.querySelector("#gallery");
+if (!selectGallery) throw new Error("No gallery found");
 const filters = document.querySelector("#filtersSection");
+if (!filters) throw new Error("No filters found");
 let filteredWorks;
-
-/**
- * Fetches works.
- * @returns {Promise<WorksDataType[]>}
- */
-const getWorks = async () => {
-  const response = await fetch(worksURL);
-  return await response.json();
-};
-
-/**
- * Fetches categories.
- * @returns {Promise<CategoryType[]>}
- */
-const getCategories = async () => {
-  const response = await fetch(categoriesURL);
-  return await response.json();
-};
 
 // afficher wokrs
 const displayWorks = (worksData) => {
