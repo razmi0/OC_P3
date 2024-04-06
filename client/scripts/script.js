@@ -24,47 +24,50 @@ const categoriesData = await getCategories();
 console.log(categoriesData);
 
 /**
- * buildGroupedWorks fabrique une map (comme un objet ) avec les works groupés par catégorie.
+ * @description createGroupedWorks fabrique une map (comme un objet) avec les works groupés par catégorie.
  * Une map est plus efficace qu'un objet pour stocker des paires clé-valeur et écrire régulièrement les données à l'interieur.
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
  * @returns {Map<CategoryType["name"], WorksDataType[]>}
  */
-const buildGroupedWorks = () => {
+const createGroupedWorks = () => {
+  // Notre variable de départ est une map vide, on va le remplir dans la prochaine boucle forEach
   let groupedWorks = new Map();
 
+  // On boucle sur les catégories pour créer les entrées dans la map pour chaque catégorie
   categoriesData.forEach((category) => {
-    const key = category.name;
-    const works = worksData.filter((work) => work.categoryId === category.id);
-    groupedWorks.set(key, works);
+    const key = category.name; // Exemple : "Objets"
+    const works = worksData.filter((work) => work.categoryId === category.id); // On filtre les works en utilisant l'équivalence des ID de catégorie
+    groupedWorks.set(key, works); // Exemple : {"Objets" => [work1, work2]}
   });
 
   // On verifie que tous les works ont leur catégorie dans la map
   const isCategoryComplete = worksData.every((work) => groupedWorks.has(work.category.name));
   if (!isCategoryComplete) console.warn("Certaine catégories n'ont pas de works associés.");
 
-  // On verifie que tous les works sont dans la map
-  const worksTotal = worksData.length;
-  let worksTotalInMap = 0;
+  // On verifie que tous les works sont dans la map en comparant le nombre de works total avec le nombre de works dans la map
+  const numberOfWorks = worksData.length;
+  let numberOfWorksInMap = 0;
   for (const works of groupedWorks.values()) {
-    worksTotalInMap += works.length;
+    numberOfWorksInMap += works.length;
   }
-  if (worksTotal !== worksTotalInMap) console.warn("Tous les works ne sont pas dans la map.");
+  const diff = numberOfWorks - numberOfWorksInMap;
+  if (diff !== 0) console.warn("Tous les works ne sont pas dans la map. Il en manque : ", diff, " works.");
 
-  // On rajoute la catégorie "Tous" manuellement
-  const key = "Tous";
-  const works = worksData;
-  groupedWorks.set(key, works);
+  // On rajoute la catégorie "Tous" manuellement avec tous les works
+  groupedWorks.set("Tous", worksData);
 
   // A ce niveau là on obtient :
   // {"Objets" => Array(2)}
   // {"Appartements" => Array(6)}
   // {"Hotels & restaurants" => Array(3)}
   // {"Tous" => Array(11)}
-  // On va pouvoir facilement accéder aux works par catégorie quand on cliquera sur un filtre
+  // Si une catégorie manque ou que un work n'est pas dans la map, on aura un warning en console
+  // On va pouvoir facilement accéder aux works par catégorie quand on cliquera sur un filtre de cette manière :
+  // Exemple : groupedWorks.get("Objets") ou groupedWorks.get("Appartements")
   return groupedWorks;
 };
 
-const groupedWorks = buildGroupedWorks();
+const groupedWorks = createGroupedWorks();
 
 /**
  * Afficher Works
@@ -75,9 +78,17 @@ const groupedWorks = buildGroupedWorks();
  *      <figcaption>Abajour Tahina</figcaption>
  *    </figure>
  *    ...
+ * @description On donne à displayWorks une catégorie, il va chercher les works associés dans groupedWorks et contruire le HTML
+ * @param {CategoryType["name"]} categorieName - Tous | Objets | Appartements | Hotels & restaurants
  */
-const displayWorks = () => {
-  worksData.forEach((work) => {
+const displayWorks = (categorieName) => {
+  const selectedWorks = groupedWorks.get(categorieName);
+  if (!selectedWorks) {
+    console.warn(`La ${categorieName} n'existe pas`);
+    return;
+  }
+
+  selectedWorks[categorieName].forEach((work) => {
     const elementsWork = document.createElement("figure");
     const caption = document.createElement("figcaption");
     const img = document.createElement("img");
@@ -92,7 +103,7 @@ const displayWorks = () => {
     selectGallery.appendChild(elementsWork);
   });
 };
-displayWorks();
+displayWorks("Tous");
 
 //creer les filtres
 // Tous , objets, appartement, hotel & restaurant
