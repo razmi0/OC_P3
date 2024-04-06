@@ -105,9 +105,20 @@ const displayWorks = (categorieName) => {
 };
 displayWorks("Tous");
 
-//creer les filtres
-// Tous , objets, appartement, hotel & restaurant
+/**
+ * Creer les filtres
+ * @description Boucle sur groupedWorks et creer un tableau de avec les noms des catégories
+ * Tous , objets, appartement, hotel & restaurant
+ * @param {*} categoriesData
+ * @param {*} filter
+ */
 const createFilters = (categoriesData, filter) => {
+  const categoriesNames = Array.from(groupedWorks.keys()).reverse();
+  console.log(categoriesNames);
+
+  const filtersUl = document.createElement("ul");
+  filtersUl.classList.add("categories");
+  filters.appendChild(filtersUl);
   const allWorksElements = document.createElement("li");
 
   allWorksElements.textContent = "Tous";
@@ -126,18 +137,6 @@ const createFilters = (categoriesData, filter) => {
     filter.appendChild(elementsList);
   });
 };
-
-// afficher categories
-const displayCategories = () => {
-  const filtersUl = document.createElement("ul");
-  filtersUl.classList.add("categories");
-
-  filters.appendChild(filtersUl);
-
-  createFilters(categoriesData, filtersUl);
-};
-
-displayCategories();
 
 // au click ...
 const click = (works) => {
