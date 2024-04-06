@@ -115,7 +115,7 @@ const createFilters = () => {
   filtersUl.classList.add("categories");
   filters.appendChild(filtersUl);
 
-  const allLis = [];
+  const allFiltersElements = [];
 
   // On rajoute "Tous" manuellement
   const tousElement = document.createElement("li");
@@ -124,7 +124,7 @@ const createFilters = () => {
   tousElement.classList.add("filters");
   filtersUl.appendChild(tousElement);
 
-  allLis.push(tousElement);
+  allFiltersElements.push(tousElement);
 
   categoriesData.forEach((category) => {
     const elementList = document.createElement("li");
@@ -132,10 +132,10 @@ const createFilters = () => {
     elementList.setAttribute("data-categories-id", category.id.toString());
     elementList.classList.add("filters");
     filtersUl.appendChild(elementList);
-    allLis.push(elementList);
+    allFiltersElements.push(elementList);
   });
 
-  return allLis;
+  return allFiltersElements;
 };
 
 const allFiltersElements = createFilters();
