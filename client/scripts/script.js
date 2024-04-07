@@ -1,50 +1,30 @@
-//@ts-check
 "use strict";
-
-import { getCategories, getWorks } from "./fetch.js";
-
-// TYPES
-/**
- * @typedef {import("./typedefs.js").WorksDataType} WorksDataType
- * @typedef {import("./typedefs.js").CategoryType} CategoryType
- */
-
-// DOM ELEMENTS
-const selectGallery = document.querySelector("#gallery");
-if (!selectGallery) throw new Error("No gallery found");
-const filters = document.querySelector("#filtersSection");
-if (!filters) throw new Error("No filters found");
-
-// MAIN
-// Récupérer les données
-const worksData = await getWorks();
-console.log(worksData);
-
-const categoriesData = await getCategories();
-console.log(categoriesData);
 
 /**
  * @description createGroupedWorks fabrique une map (comme un objet) avec les works groupés par catégorie.
  * Une map est plus efficace qu'un objet pour stocker des paires clé-valeur et écrire régulièrement les données à l'interieur.
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
- * @returns {Map<CategoryType["name"], WorksDataType[]>}
  */
-const createGroupedWorks = () => {
+const createGroupedWorks = (categoriesData, worksData) => {
   // Notre variable de départ est une map vide, on va le remplir dans la prochaine boucle forEach
+  // --
   let groupedWorks = new Map();
 
   // On boucle sur les catégories pour créer les entrées dans la map pour chaque catégorie
+  // --
   categoriesData.forEach((category) => {
-    const key = category.name; // Exemple : "Objets"
+    const key = category.id.toString(); // Exemple : "1" pour Objets
     const works = worksData.filter((work) => work.categoryId === category.id); // On filtre les works en utilisant l'équivalence des ID de catégorie
-    groupedWorks.set(key, works); // Exemple : {"Objets" => [work1, work2]}
+    groupedWorks.set(key, works); // Exemple : {"1" => [work1, work2]}
   });
 
   // On verifie que tous les works ont leur catégorie dans la map
-  const isCategoryComplete = worksData.every((work) => groupedWorks.has(work.category.name));
+  //--
+  const isCategoryComplete = worksData.every((work) => groupedWorks.has(work.categoryId.toString()));
   if (!isCategoryComplete) console.warn("Certaine catégories n'ont pas de works associés.");
 
   // On verifie que tous les works sont dans la map en comparant le nombre de works total avec le nombre de works dans la map
+  // --
   const numberOfWorks = worksData.length;
   let numberOfWorksInMap = 0;
   for (const works of groupedWorks.values()) {
@@ -53,40 +33,36 @@ const createGroupedWorks = () => {
   const diff = numberOfWorks - numberOfWorksInMap;
   if (diff !== 0) console.warn("Tous les works ne sont pas dans la map. Il en manque : ", diff, " works.");
 
-  // On rajoute la catégorie "Tous" manuellement avec tous les works
-  groupedWorks.set("Tous", worksData);
+  // On rajoute la catégorie "Tous" manuellement avec tous les works avec l'id "0"
+  // --
+  groupedWorks.set("0", worksData);
 
   // A ce niveau là on obtient :
-  // {"Objets" => Array(2)}
-  // {"Appartements" => Array(6)}
-  // {"Hotels & restaurants" => Array(3)}
-  // {"Tous" => Array(11)}
+  // {"1" => Array(2)}   Objets
+  // {"2" => Array(6)}   Appartements
+  // {"3" => Array(3)}   Hotels & restaurants
+  // {"0" => Array(11)}  Tous
+
   // Si une catégorie manque ou que un work n'est pas dans la map, on aura un warning en console
-  // On va pouvoir facilement accéder aux works par catégorie quand on cliquera sur un filtre de cette manière :
-  // Exemple : groupedWorks.get("Objets") ou groupedWorks.get("Appartements")
+  // On va pouvoir facilement accéder aux works par catégorie quand on cliquera sur un filtre : groupedWorks.get("1")
+  // --
   return groupedWorks;
 };
 
-const groupedWorks = createGroupedWorks();
-
 /**
  * Afficher Works
- *
- * <div class="gallery" id="gallery">
- *    <figure>
- *      <img src="images/abajour-tahina.png" alt="Abajour Tahina" />
- *      <figcaption>Abajour Tahina</figcaption>
- *    </figure>
- *    ...
- * @description On donne à displayWorks une catégorie, il va chercher les works associés dans groupedWorks et contruire le HTML
- * @param {CategoryType["name"]} categorieName - Tous | Objets | Appartements | Hotels & restaurants
+ * @description On donne à displayWorks un catégorie id,
+ * il va chercher les works associés dans groupedWorks
+ * et contruire le HTML pour l'insérer dans la gallerie
  */
-const displayWorks = (categorieName) => {
-  const selectedWorks = groupedWorks.get(categorieName);
+const displayWorks = (gallery, groupedWorks, categorieId) => {
+  const selectedWorks = groupedWorks.get(categorieId);
   if (!selectedWorks) {
-    console.warn(`La ${categorieName} n'existe pas`);
+    console.warn(`La catégorie n'existe pas => id : ${categorieId} `);
     return;
   }
+
+  gallery.innerHTML = ""; // On vide la gallerie avant de la remplir avec les works selectionnés
 
   selectedWorks.forEach((work) => {
     const elementsWork = document.createElement("figure");
@@ -96,28 +72,32 @@ const displayWorks = (categorieName) => {
     img.src = work.imageUrl;
     img.textContent = work.title;
     caption.textContent = work.title;
-    elementsWork.setAttribute("data-work-id", work.id.toString());
-
+    // Chaque element de la gallerie a un attribut data-work-category-id qui correspond à l'ID de la catégorie
+    // (ne sert à rien pour l'instant, supprimable)
+    // --
+    elementsWork.setAttribute("data-work-category-id", work.categoryId.toString());
     elementsWork.appendChild(img);
     elementsWork.appendChild(caption);
-    selectGallery.appendChild(elementsWork);
+    gallery.appendChild(elementsWork);
   });
 };
-displayWorks("Tous");
 
 /**
  * Creer les filtres
- * @description Apres avoir creer le <ul>, boucle sur categorieData , fabrique les <li>, les ajoute au <ul>
- * @returns {HTMLLIElement[]} - Tous les <li> sont stocké dans un tableau et retourné par la fonction
+ * @description Apres avoir creer le <ul>,
+ * on boucle sur categorieData, on fabrique les <li>,
+ * on les ajoute au <ul> puis
+ * on stocke les <li> dans un tableau qui sera retourné pour poser les listeners dessus dans la prochaine fonction
  */
-const createFilters = () => {
+const createFilters = (filters, categoriesData) => {
   const filtersUl = document.createElement("ul");
   filtersUl.classList.add("categories");
   filters.appendChild(filtersUl);
 
   const allFiltersElements = [];
 
-  // On rajoute "Tous" manuellement
+  // On rajoute "Tous" manuellement avec l'id "0"
+  // --
   const tousElement = document.createElement("li");
   tousElement.textContent = "Tous";
   tousElement.setAttribute("data-categories-id", "0");
@@ -132,33 +112,37 @@ const createFilters = () => {
     elementList.setAttribute("data-categories-id", category.id.toString());
     elementList.classList.add("filters");
     filtersUl.appendChild(elementList);
+
+    // On stocke le <li> ici
+    // --
     allFiltersElements.push(elementList);
   });
 
   return allFiltersElements;
 };
 
-const allFiltersElements = createFilters();
-
 /**
- * @description attachListeners boucle sur les <li> stocké dans allFiltersElements et ajoute un eventListener au click relier à une fonction de filtre
- * @param {WorksDataType[]} works
+ * @description attachListeners boucle sur les <li> stocké dans allFiltersElements
+ * et ajoute un eventListener au <li> sur l'event "click" qui déclenche la fonction handleClickFilter
  */
+const attachListeners = (gallery, groupedWorks, allFiltersElements) => {
+  /**
+   * @description handleClickFilter est une fonction qui sera appelée à chaque click sur un filtre,
+   * elle récupère l'ID de la catégorie selectionnée dans l'attribut data-categories-id
+   * et appelle displayWorks avec les works groupés et la catégorie selectionnée
+   * si l'attribut n'existe pas, on lui donne la valeur "0" correspondant à la catégorie "Tous" ( nullish coalescing )
+   * @see https://developer.mozilla.org/fr/docs/Web/API/HTMLElement/dataset
+   * @see https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing
+   */
+  const handleClickFilter = (event) => {
+    const target = event.target;
+    const selectedCategoryId = target.dataset.categoriesId ?? "0";
+    displayWorks(gallery, groupedWorks, selectedCategoryId);
+  };
 
-// au click ...
-const click = (works) => {
-  filters.addEventListener("click", (event) => {
-    const selectedCategoryId = event.target.getAttribute("data-categories-id"); // Récupérer l'ID de la catégorie sélectionnée
-    console.log(selectedCategoryId);
-
-    if (selectedCategoryId !== "all") {
-      //si le click et diff de all on filtre sinon on garde les works
-      const filteredWorks = works.filter((work) => work.categoryId === selectedCategoryId);
-      displayWorks(filteredWorks);
-    } else {
-      displayWorks(works);
-    }
-  });
+  allFiltersElements.forEach((element) => element.addEventListener("click", handleClickFilter));
 };
 
-export {};
+// On exporte les fonctions pour les utiliser dans le script principal qui s'appelle main.js
+// --
+export { attachListeners, createFilters, createGroupedWorks, displayWorks };
