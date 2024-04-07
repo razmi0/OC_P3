@@ -7,7 +7,7 @@
 // TODO (#3) : écrire une fonction qui construit le HTML
 //             Exemple : createNodes("figure", children : { img : { src : work.imageUrl }, figcaption : { textContent : work.title } })
 // TODO (#4) : utliser la fonction createNodes pour construire le HTML de displayWorks et createFilters
-// TODO (#5) : mettre un <bouton> autour de chaque <li> quand le <li> sera cliqué
+// TODO (#5) : mettre un <bouton> autour de chaque <li>, il sera accessible par le clavier / malvoyant ect..
 // --
 
 /**
