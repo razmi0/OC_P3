@@ -1,8 +1,17 @@
 "use strict";
+// --
+// Ce fichiers contient toutes les fonctions. Elles sont exportées pour être utilisées dans le script principal main.js
+// --
+// TODO (#1) : createGroupedWorks procède à deux vérifications : refactoriser en deux fonctions distinctes de verification : checkCategoriesComplete et checkWorksComplete
+// TODO (#2) : supprimer l'entrée "Tous" de la map et utiliser directement worksData pour afficher tous les works
+// TODO (#3) : écrire une fonction qui construit le HTML
+//             Exemple : createNodes("figure", { class : ""}, children : { img : { src : "" }, figcaption : { textContent : "" } })
+// TODO (#4) : utliser la fonction createNodes pour construire le HTML de displayWorks et createFilters
+// --
 
 /**
  * @description createGroupedWorks fabrique une map (comme un objet) avec les works groupés par catégorie.
- * Une map est plus efficace qu'un objet pour stocker des paires clé-valeur et écrire régulièrement les données à l'interieur.
+ * Une map est plus efficace qu'un objet pour stocker des paires clé-valeur et écrire régulièrement les données à l'interieur (peut être plus tard ??..).
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
  */
 const createGroupedWorks = (categoriesData, worksData) => {

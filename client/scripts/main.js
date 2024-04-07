@@ -1,4 +1,3 @@
-//@ts-check
 import { getWorks, getCategories } from "./fetch.js";
 import { createGroupedWorks, attachListeners, createFilters, displayWorks } from "./script.js";
 
@@ -11,13 +10,16 @@ if (!filters) throw new Error("No filters found");
 // --
 const worksData = await getWorks();
 const categoriesData = await getCategories();
+
 // Organiser les données
 // --
 const groupedWorks = createGroupedWorks(categoriesData, worksData);
+
 // Creer les filtres et poser les listeners
 // --
 const allFiltersElements = createFilters(filters, categoriesData);
 attachListeners(gallery, groupedWorks, allFiltersElements);
+
 // Afficher les works
 // --
 displayWorks(gallery, groupedWorks, "0");
