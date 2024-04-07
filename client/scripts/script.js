@@ -5,8 +5,9 @@
 // TODO (#1) : createGroupedWorks procède à deux vérifications : refactoriser en deux fonctions distinctes de verification : checkCategoriesComplete et checkWorksComplete
 // TODO (#2) : supprimer l'entrée "Tous" de la map et utiliser directement worksData pour afficher tous les works
 // TODO (#3) : écrire une fonction qui construit le HTML
-//             Exemple : createNodes("figure", { class : ""}, children : { img : { src : "" }, figcaption : { textContent : "" } })
+//             Exemple : createNodes("figure", children : { img : { src : work.imageUrl }, figcaption : { textContent : work.title } })
 // TODO (#4) : utliser la fonction createNodes pour construire le HTML de displayWorks et createFilters
+// TODO (#5) : mettre un <bouton> autour de chaque <li> quand le <li> sera cliqué
 // --
 
 /**

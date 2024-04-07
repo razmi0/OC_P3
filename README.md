@@ -34,10 +34,22 @@ Code du projet 6 d'intégrateur web.
 
 ### Styles
 
-- J'ai bougé les images dans le dossier ./public qui est déservit tel quel par le serveur de développement et de production
 - J'ai déplacé assets dans ./src pour y mettre les fichiers de styles => ./src/styles
 - J'ai rajouté une feuille de style : normalize.css [DOCUMENTATION](https://grafikart.fr/tutoriels/reset-normalize-css-1096)
 
 ### Structure projet
 
 - /client/ remplace /FrontEnd/
+- les scripts sont dans le dossier /client/scripts/
+- J'ai bougé les images dans le dossier ./public qui est déservit tel quel par le serveur de développement et de production
+
+### JavaScript
+
+- 3 fichiers de scripts : main.js, script.js et fetch.js
+- index.html importe main.js qui active tout le javascript :
+  - script.js contient toutes les fonctions de manipulation du DOM et de la data
+  - fetch.js contient les fonctions de fetch
+
+### Todo
+
+- Chaque fichier possede des todos

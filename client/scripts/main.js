@@ -15,9 +15,12 @@ const categoriesData = await getCategories();
 // --
 const groupedWorks = createGroupedWorks(categoriesData, worksData);
 
-// Creer les filtres et poser les listeners
+// Creer les filtres
 // --
 const allFiltersElements = createFilters(filters, categoriesData);
+
+// Poser les listeners
+// --
 attachListeners(gallery, groupedWorks, allFiltersElements);
 
 // Afficher les works
