@@ -35,7 +35,7 @@ Code du projet 6 d'intégrateur web.
 ### Styles
 
 - J'ai déplacé assets dans ./src pour y mettre les fichiers de styles => ./src/styles
-- J'ai rajouté une feuille de style : normalize.css [DOCUMENTATION](https://grafikart.fr/tutoriels/reset-normalize-css-1096)
+- J'ai rajouté une feuille de style : normalize.css [doc](https://grafikart.fr/tutoriels/reset-normalize-css-1096)
 
 ### Structure projet
 
@@ -53,3 +53,12 @@ Code du projet 6 d'intégrateur web.
 ### Todo
 
 - Chaque fichier possede des todos
+
+### Notes
+
+<p>
+Chaque fonction est accompagné au dessus de commentaires balisé par des /** */ pour expliquer son fonctionnement et son utilité. C'est de la JSDOC, elle est accessible au hover sur le nom de la fonction partout dans ton projet.
+</p>
+<p>
+J'ai essayé de respecter ton travail initial en gardant l'esprit logique premier.
+</p>
