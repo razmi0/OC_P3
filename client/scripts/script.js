@@ -8,6 +8,9 @@
 //             Exemple : createNodes("figure", children : { img : { src : work.imageUrl }, figcaption : { textContent : work.title } })
 // TODO (#4) : utliser la fonction createNodes pour construire le HTML de displayWorks et createFilters
 // TODO (#5) : mettre un <bouton> autour de chaque <li>, il sera accessible par le clavier / malvoyant ect..
+// TODO (#6) : ajouter une fonction "saveToLocalStorage" qui sauvegarde les works dans le localStorage
+//             aprés le fetch et une fonction "getFromLocalStorage" qui récupère les works du localStorage
+//             pour éviter de faire des appels inutiles à l'API
 // --
 
 /**
