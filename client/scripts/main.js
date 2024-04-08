@@ -19,10 +19,10 @@ const groupedWorks = createGroupedWorks(categoriesData, worksData);
 // --
 const allFiltersElements = createFilters(filters, categoriesData);
 
-// Poser les listeners
+// Poser les listeners " click" sur les filtres
 // --
 attachListeners(gallery, groupedWorks, allFiltersElements);
 
-// Afficher les works
+// Afficher les works une première fois ("0" pour "Tous")
 // --
 displayWorks(gallery, groupedWorks, "0");

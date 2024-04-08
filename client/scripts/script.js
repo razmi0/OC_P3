@@ -11,23 +11,45 @@
 // TODO (#6) : ajouter une fonction "saveToLocalStorage" qui sauvegarde les works dans le localStorage
 //             aprés le fetch et une fonction "getFromLocalStorage" qui récupère les works du localStorage
 //             pour éviter de faire des appels inutiles à l'API
+//             @see https://developer.mozilla.org/fr/docs/Web/API/Window/localStorage
 // --
 
 /**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  * @description createGroupedWorks fabrique une map (comme un objet) avec les works groupés par catégorie.
- * Une map est plus efficace qu'un objet pour stocker des paires clé-valeur et écrire régulièrement les données à l'interieur (peut être plus tard ??..).
+ * Une map est plus efficace qu'un objet pour stocker des paires clé-valeur
+ * et écrire régulièrement les données à l'interieur (peut être plus tard ??..).
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  */
 const createGroupedWorks = (categoriesData, worksData) => {
   // Notre variable de départ est une map vide, on va le remplir dans la prochaine boucle forEach
   // --
   let groupedWorks = new Map();
 
-  // On boucle sur les catégories pour créer les entrées dans la map pour chaque catégorie
+  // On boucle sur les catégories pour créer les entrées dans la map pour chaque catégorie une par une
   // --
   categoriesData.forEach((category) => {
     const key = category.id.toString(); // Exemple : "1" pour Objets
-    const works = worksData.filter((work) => work.categoryId === category.id); // On filtre les works en utilisant l'équivalence des ID de catégorie
+
+    // On filtre les works en utilisant l'équivalence des ID de catégorie
+    // --
+    const works = worksData.filter((work) => work.categoryId === category.id);
     groupedWorks.set(key, works); // Exemple : {"1" => [work1, work2]}
   });
 
@@ -63,10 +85,27 @@ const createGroupedWorks = (categoriesData, worksData) => {
 };
 
 /**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  * Afficher Works
  * @description On donne à displayWorks un catégorie id,
  * il va chercher les works associés dans groupedWorks
  * et contruire le HTML pour l'insérer dans la gallerie
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  */
 const displayWorks = (gallery, groupedWorks, categorieId) => {
   const selectedWorks = groupedWorks.get(categorieId);
@@ -96,11 +135,28 @@ const displayWorks = (gallery, groupedWorks, categorieId) => {
 };
 
 /**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  * Creer les filtres
  * @description Apres avoir creer le <ul>,
  * on boucle sur categorieData, on fabrique les <li>,
  * on les ajoute au <ul> puis
  * on stocke les <li> dans un tableau qui sera retourné pour poser les listeners dessus dans la prochaine fonction
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  */
 const createFilters = (filters, categoriesData) => {
   const filtersUl = document.createElement("ul");
@@ -135,17 +191,51 @@ const createFilters = (filters, categoriesData) => {
 };
 
 /**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  * @description attachListeners boucle sur les <li> stocké dans allFiltersElements
  * et ajoute un eventListener au <li> sur l'event "click" qui déclenche la fonction handleClickFilter
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  */
 const attachListeners = (gallery, groupedWorks, allFiltersElements) => {
   /**
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
    * @description handleClickFilter est une fonction qui sera appelée à chaque click sur un filtre,
    * elle récupère l'ID de la catégorie selectionnée dans l'attribut data-categories-id
    * et appelle displayWorks avec les works groupés et la catégorie selectionnée
    * si l'attribut n'existe pas, on lui donne la valeur "0" correspondant à la catégorie "Tous" ( nullish coalescing )
    * @see https://developer.mozilla.org/fr/docs/Web/API/HTMLElement/dataset
    * @see https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
    */
   const handleClickFilter = (event) => {
     const target = event.target;
